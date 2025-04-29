@@ -65,11 +65,22 @@ def detectar_picos_r(tiempos, voltajes_filtrados, fs, umbral_altura=0.5, min_int
     tiempos_picos = [tiempos[i] for i in picos]
     return picos, tiempos_picos
 ```
+### calcular_rr_intervals
+Calcula la diferencia en tiempo entre cada par de picos R consecutivos
+```
+def calcular_rr_intervals(tiempos_picos):
+    rr_intervals = np.diff(tiempos_picos)
+    return rr_intervals
+```
+### calcular_hrv_tiempo
+Realiza el análisis de la variación de la frecuencia cardiaca en el tiempo, esto lo logra mediante los siguientes parametros:
+-SDNN: desviación estándar de los RR.
 
+-RMSSD: raíz cuadrada de la media de las diferencias cuadradas sucesivas.
 
+-pNN50: % de diferencias RR > 50 ms.
 
-
-
+-media_rr: promedio de todos los RR.
 
 
 
