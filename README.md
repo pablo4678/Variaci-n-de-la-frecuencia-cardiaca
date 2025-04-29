@@ -1,1 +1,1 @@
-# Variacion de la frecuencia cardiaca
+# Variación-de-la-frecuencia-cárdiaca
