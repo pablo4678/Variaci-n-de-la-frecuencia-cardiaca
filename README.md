@@ -81,9 +81,32 @@ Realiza el análisis de la variación de la frecuencia cardiaca en el tiempo, es
 -pNN50: % de diferencias RR > 50 ms.
 
 -media_rr: promedio de todos los RR.
+```
+def calcular_hrv_tiempo(rr_intervals):
+    rr_intervals = np.array(rr_intervals)
 
+    # Diferencias sucesivas
+    rr_diff = np.diff(rr_intervals)
 
+    # SDNN: desviación estándar de los RR
+    sdnn = np.std(rr_intervals)
 
+    # RMSSD: raíz de la media de las diferencias cuadradas sucesivas
+    rmssd = np.sqrt(np.mean(rr_diff**2))
+
+    # pNN50: porcentaje de diferencias sucesivas > 50 ms
+    pnn50 = np.sum(np.abs(rr_diff) > 0.05) / len(rr_diff) * 100
+
+    # Media de RR
+    media_rr = np.mean(rr_intervals)
+
+    return {
+        'SDNN (s)': sdnn,
+        'RMSSD (s)': rmssd,
+        'pNN50 (%)': pnn50,
+        'Media RR (s)': media_rr
+    }
+```
 
 
 
