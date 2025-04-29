@@ -42,8 +42,20 @@ def graficar(tiempos, voltajes):
 ## Preprocesamiento de la señal y diseño del filtro
 Para filtrar la señal se usó un fltro tipo pasabanda con frecuencias de corte entre 0,5 Hz y 40 Hz.
 El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del mismo orden, lo que permite un filtrado más eficiente (más atenuación usando la misma cantidad de procesamiento) el filtro usado también es de tipo Butterworth pues este tiene una plana hasta la frecuencia de corte y despues disminuye 80dB por década para el filtro elegido de orden 4 es de 80dB por década.
+código para filtrado:
+```
+fs=250
+def filtro_pasabanda(voltajes, fs, lowcut=0.5, highcut=40, orden=4):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
 
-
+    b, a = butter(orden, [low, high], btype='band')
+    voltajes_filtrados = filtfilt(b, a, voltajes)
+    return voltajes_filtrados
+```
+# Calculo de la frecuencia cárdiaca y análisis de la señal
+Para hacer el análisis de la señal y analisar la variacion de la frecuencia cardiaca HRV. Se usaron las siguientes funciones:
 
 
 
