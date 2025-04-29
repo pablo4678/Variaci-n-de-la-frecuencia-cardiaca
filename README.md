@@ -40,6 +40,29 @@ def graficar(tiempos, voltajes):
     plt.show()
 ```
 ## Preprocesamiento de la señal y diseño del filtro
+Para filtrar la señal se usó un fltro tipo pasabanda con frecuencias de corte entre 0,5 Hz y 40 Hz.
+El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del mismo orden, lo que permite un filtrado más eficiente (más atenuación usando la misma cantidad de procesamiento) el filtro usado también es de tipo Butterworth pues este tiene una plana hasta la frecuencia de corte y despues disminuye 80dB por década para el filtro elegido de orden 4 es de 80dB por década.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
