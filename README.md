@@ -54,9 +54,17 @@ def filtro_pasabanda(voltajes, fs, lowcut=0.5, highcut=40, orden=4):
     voltajes_filtrados = filtfilt(b, a, voltajes)
     return voltajes_filtrados
 ```
-# Calculo de la frecuencia cárdiaca y análisis de la señal
+## Calculo de la frecuencia cárdiaca y análisis de la señal
 Para hacer el análisis de la señal y analisar la variacion de la frecuencia cardiaca HRV. Se usaron las siguientes funciones:
-
+### detectar_picos_r
+Esta función detecta los picos, haciendo uso del voltaje de umbral y el tiempo mínimo entre 2 picos
+```
+def detectar_picos_r(tiempos, voltajes_filtrados, fs, umbral_altura=0.5, min_intervalo_s=0.6):
+    distancia_muestras = int(fs * min_intervalo_s)
+    picos, propiedades = find_peaks(voltajes_filtrados,distance=distancia_muestras,height=umbral_altura)
+    tiempos_picos = [tiempos[i] for i in picos]
+    return picos, tiempos_picos
+```
 
 
 
