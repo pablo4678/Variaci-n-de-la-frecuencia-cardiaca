@@ -1,20 +1,18 @@
 # Variación-de-la-frecuencia-cárdiaca
 ## Fundamento teórico
-# Sistema Nervioso Autónomo 
+### Sistema Nervioso Autónomo 
 El Sistema Nervioso Autónomo regula funciones involuntarias como la frecuencia cardíaca, la presión arterial y la digestión. Se divide en dos sistemas principales, el sistema simpático se encarga de la respuesta huida aumentando la frecuencia cardíaca (disminuye el HVR). El sistema parasimpático disminuye la frecuencia cardíaca y se  activa en reposo o durante la recuperación (Aumenta el HVR).
 
-## Variabilidad de la Frecuencia Cardíaca (HRV)  
+### Variabilidad de la Frecuencia Cardíaca (HRV)  
 La HRV es una medida de las variaciones en el intervalo entre latidos consecutivos (intervalos R-R del ECG).
 
-## Transformada Wavelet
+### Transformada Wavelet
 Es una herramienta matemática que permite analizar señales que cambian a lo largo del tiempo, como la señal del ECG.La transformada de wavelet descompone una señal en ondas pequeñas(wavelts) que estan tanto en tiempo como en frecuencia, permitiendo así mostrar que frecuencias están presententes y cuando.
-## Wavelet cmor
+### Wavelet cmor
 La wavelet Morlet compleja es una onda sinusoidal modulada por una función gaussiana, esta al ser compleja también da información de la fase de la señal, esta se utiliza ya que permite detectar cambios suaves y graduales en las frecuencias asociadas al sistema autónomo, ayuda a visualizar cómo cambian estas frecuencias a lo largo del tiempo y permite identificar fluctuaciones rítmicas.
 
 ## Diagrama de flujo
 ![image](https://github.com/user-attachments/assets/b05c2db5-c9fe-4d7b-972b-cfe95a10ea82)
-
-
 
 ## Diseño del experimento y adquisición de la señal.
 Se tomó la señal electrocardiográfica del paciente durante un lapso de tiempo de 5 minutos, durante los primeros 2 minutos el sujeto está en un estado de relajación absoluto con los ojos cerrados y como único estímulo música relajante, durante los siguientes dos minutos ese espera medir la actividad basal del sujeto, en este periodo de tiempo el sujeto está con los ojos abiertos entablando una conversación, finalmente durante el último minuto este se expone a un estímulo estresante, en este caso videos de terror.
@@ -59,6 +57,10 @@ def graficar(tiempos, voltajes):
 ## Preprocesamiento de la señal y diseño del filtro
 Para filtrar la señal se usó un filtro tipo pasabanda con frecuencias de corte entre 0,5 Hz y 40 Hz.
 El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del mismo orden, lo que permite un filtrado más eficiente (más atenuación usando la misma cantidad de procesamiento) el filtro usado también es de tipo Butterworth pues este tiene una plana hasta la frecuencia de corte y después disminuye 80dB por década para el filtro elegido de orden 4 es de 80dB por década.
+La frecuencia de muestreo es de 250, teniendo en cuenta el teorema de Nyquist que establece que la frecuencia de muestreo debe ser más del doble de la frecuencia máxima de la señal, dado que la frecuencia máxima de las señales electrocardiograficas es 100Hz se escoge 250Hz como frecuencia de muestreo.
+Después se halla la frecuencia de Nyquist  F_{N}=\frac{F_{s}}{2}
+##Ecuacion en diferencias del filtro
+
 código para filtrado:
 ```
 fs=250
