@@ -58,7 +58,8 @@ def graficar(tiempos, voltajes):
 Para filtrar la señal se usó un filtro tipo pasabanda con frecuencias de corte entre 0,5 Hz y 40 Hz.
 El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del mismo orden, lo que permite un filtrado más eficiente (más atenuación usando la misma cantidad de procesamiento) el filtro usado también es de tipo Butterworth pues este tiene una plana hasta la frecuencia de corte y después disminuye 80dB por década para el filtro elegido de orden 4 es de 80dB por década.
 La frecuencia de muestreo es de 250, teniendo en cuenta el teorema de Nyquist que establece que la frecuencia de muestreo debe ser más del doble de la frecuencia máxima de la señal, dado que la frecuencia máxima de las señales electrocardiograficas es 100Hz se escoge 250Hz como frecuencia de muestreo.
-Después se halla la frecuencia de Nyquist  F_{N}=\frac{F_{s}}{2}
+Después se halla la frecuencia de Nyquist  https://latex.codecogs.com/svg.image?&space;F_{N}=\frac{F_{s}}{2}
+
 ##Ecuacion en diferencias del filtro
 
 código para filtrado:
