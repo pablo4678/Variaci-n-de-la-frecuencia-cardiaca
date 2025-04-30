@@ -17,7 +17,7 @@ La wavelet Morlet compleja es una onda sinusoidal modulada por una función gaus
 
 
 ## Diseño del experimento y adquisición de la señal.
-Se tomó la señal electrocardiográfica del paciente durante un lapso de tiempo de 6 minutos, durante los primeros 2 minutos el sujeto está en un estado de relajación absoluto con los ojos cerrados y como único estímulo música relajante, durante los siguientes dos minutos ese espera medir la actividad basal del sujeto, en este periodo de tiempo el sujeto está con los ojos abiertos entablando una conversación, finalmente durante los últimos 2 minutos este se expone a un estímulo estresante, en este caso videos de terror.
+Se tomó la señal electrocardiográfica del paciente durante un lapso de tiempo de 5 minutos, durante los primeros 2 minutos el sujeto está en un estado de relajación absoluto con los ojos cerrados y como único estímulo música relajante, durante los siguientes dos minutos ese espera medir la actividad basal del sujeto, en este periodo de tiempo el sujeto está con los ojos abiertos entablando una conversación, finalmente durante el último minuto este se expone a un estímulo estresante, en este caso videos de terror.
 
 El código para exportar y graficar la señal es el siguiente:
 ```
