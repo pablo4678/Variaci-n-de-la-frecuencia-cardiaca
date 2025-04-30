@@ -182,11 +182,30 @@ Para hacer el análisis de la señal y analisar la variacion de la frecuencia ca
 ### detectar_picos_r
 Esta función detecta los picos, haciendo uso del voltaje de umbral y el tiempo mínimo entre 2 picos
 ```
-def detectar_picos_r(tiempos, voltajes_filtrados, fs, umbral_altura=0.5, min_intervalo_s=0.6):
-    distancia_muestras = int(fs * min_intervalo_s)
-    picos, propiedades = find_peaks(voltajes_filtrados,distance=distancia_muestras,height=umbral_altura)
+def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
+ 
+    ecg_norm = (voltajes_filtrados - np.mean(voltajes_filtrados)) / np.std(voltajes_filtrados)    # Normalización
+    
+    distancia_muestras = int(0.03 * fs)  # Probar con 30 ms 
+    umbral_altura = np.percentile(ecg_norm, 50)  # Ajustar umbral adaptativo al percentil 50 o 60
+    picos, _ = find_peaks(ecg_norm, distance=distancia_muestras, height=umbral_altura)
     tiempos_picos = [tiempos[i] for i in picos]
+    
+    if plot:
+        plt.figure(figsize=(12, 4))
+        plt.plot(tiempos, ecg_norm, label='ECG normalizado')
+        plt.plot(np.array(tiempos)[picos], ecg_norm[picos], 'ro', label='Picos R detectados')
+        plt.title('Detección de Picos R (ajustada e inteligente)')
+        plt.xlabel('Tiempo (s)')
+        plt.ylabel('ECG (normalizado)')
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
+        print(f"Se detectaron {len(picos)} picos R.")
+
     return picos, tiempos_picos
+ 
 ```
 ### calcular_rr_intervals
 Calcula la diferencia en tiempo entre cada par de picos R consecutivos
