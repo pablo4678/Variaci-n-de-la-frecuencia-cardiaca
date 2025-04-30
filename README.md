@@ -63,6 +63,7 @@ Después se halla la frecuencia de Nyquist
 ![ecuación](https://latex.codecogs.com/svg.image?F_{N}=\frac{F_{s}}{2}=125&space;)
 
 Se normalizan las frecuencias de corte 
+
 ![ecuación](https://latex.codecogs.com/svg.image?F_{low}=\frac{0.5}{125}=0.004&space;)
 
 ![ecuación](https://latex.codecogs.com/svg.image?F_{high}=\frac{40}{125}=0.32&space;)
@@ -78,7 +79,8 @@ nyq = 0.5 * fs
 
 ### Ecuacion en diferencias del filtro
 ![ecuación](https://latex.codecogs.com/svg.image?y[n]=\sum_{k=1}^{8}a_{k}y[n-k]&plus;\sum_{k=0}^{8}b_{k}y[n-k])
-La sumatoria va hasta ocho dado que es un filtro pasabanda de orden 4, entonces el orden se "duplica". Se utilizó el sigiente codigo para hallar los coeficiente a y b.
+
+La sumatoria va hasta ocho dado que es un filtro pasabanda de orden 4, entonces el orden se duplica, en realidad se estaria generando un filtro de orden 8, cuatro pares de polos para cada orden de banda. Se utilizó el sigiente codigo para hallar los coeficiente a y b.
 ```
 b, a = butter(4, [0.004, 0.32], btype='band')
 print("a")
