@@ -60,10 +60,34 @@ El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del m
 La frecuencia de muestreo es de 250, teniendo en cuenta el teorema de Nyquist que establece que la frecuencia de muestreo debe ser más del doble de la frecuencia máxima de la señal, dado que la frecuencia máxima de las señales electrocardiograficas es 100Hz se escoge 250Hz como frecuencia de muestreo.
 
 Después se halla la frecuencia de Nyquist  
-![ecuación](https://latex.codecogs.com/svg.image?&space;F_{N}=\frac{F_{s}}{2})
+![ecuación](https://latex.codecogs.com/svg.image?F_{N}=\frac{F_{s}}{2}=125&space;)
+
+Se normalizan las frecuencias de corte 
+![ecuación](https://latex.codecogs.com/svg.image?F_{low}=\frac{0.5}{125}=0.004&space;)
+
+![ecuación](https://latex.codecogs.com/svg.image?F_{high}=\frac{40}{125}=0.32&space;)
+
+Estas frecuencias normalizadas se colocan como parametros para realizar el filtro
+```
+nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+
+    b, a = butter(orden, [low, high], btype='band')
+```
 
 ### Ecuacion en diferencias del filtro
+![ecuación](https://latex.codecogs.com/svg.image?y[n]=\sum_{k=1}^{8}a_{k}y[n-k]&plus;\sum_{k=0}^{8}b_{k}y[n-k])
+La sumatoria va hasta ocho dado que es un filtro pasabanda de orden 4, entonces el orden se "duplica". Se utilizó el sigiente codigo para hallar los coeficiente a y b.
+```
+b, a = butter(4, [0.004, 0.32], btype='band')
+print("a")
+print(a)
+print("b")
+print(b)
 
+```
+![ecuación](https://latex.codecogs.com/svg.image?y[n]=5.4062\,y[n-1]-12.7689\,y[n-2]&plus;17.4196\,y[n-3]-15.1907\,y[n-4]&plus;8.7164\,y[n-5]-3.1973,y[n-6]&plus;0.6804\,y[n-7]-0.0656\,y[n-8]&plus;0.02196\,x[n]-0.08785\,x[n-2]&plus;0.13177,x[n-4]-0.08785\,x[n-6]&plus;0.02196\,x[n-8])
 código para filtrado:
 ```
 fs=250
