@@ -17,7 +17,9 @@ La wavelet Morlet compleja es una onda sinusoidal modulada por una función gaus
 ## Diseño del experimento y adquisición de la señal.
 Se tomó la señal electrocardiográfica del paciente durante un lapso de tiempo de 5 minutos, durante los primeros 2 minutos el sujeto está en un estado de relajación absoluto con los ojos cerrados y como único estímulo música relajante, durante los siguientes dos minutos ese espera medir la actividad basal del sujeto, en este periodo de tiempo el sujeto está con los ojos abiertos entablando una conversación, finalmente durante el último minuto este se expone a un estímulo estresante, en este caso videos de terror.
 Para la adquicicon de la señal se hizo uso de la stm32, un moludo de electrocardiograma, y un codigo de MATLAB
+
 Codigo de MATLAB para la adquicion de la señal:
+
 ```
 clear; clc;
 
@@ -160,6 +162,8 @@ print("b")
 print(b)
 
 ```
+![image](https://github.com/user-attachments/assets/3fbb6be6-cfaa-4dbf-b409-1686562b3af1)
+
 ![ecuación](https://latex.codecogs.com/svg.image?y[n]=5.4062\,y[n-1]-12.7689\,y[n-2]&plus;17.4196\,y[n-3]-15.1907\,y[n-4]&plus;8.7164\,y[n-5]-3.1973,y[n-6]&plus;0.6804\,y[n-7]-0.0656\,y[n-8]&plus;0.02196\,x[n]-0.08785\,x[n-2]&plus;0.13177,x[n-4]-0.08785\,x[n-6]&plus;0.02196\,x[n-8])
 código para filtrado:
 ```
