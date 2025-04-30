@@ -60,9 +60,9 @@ El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del m
 La frecuencia de muestreo es de 250, teniendo en cuenta el teorema de Nyquist que establece que la frecuencia de muestreo debe ser más del doble de la frecuencia máxima de la señal, dado que la frecuencia máxima de las señales electrocardiograficas es 100Hz se escoge 250Hz como frecuencia de muestreo.
 
 Después se halla la frecuencia de Nyquist  
- F_{N}=\frac{F_{s}}{2}
+![ecuación](https://latex.codecogs.com/svg.image?&space;F_{N}=\frac{F_{s}}{2})
 
-##Ecuacion en diferencias del filtro
+### Ecuacion en diferencias del filtro
 
 código para filtrado:
 ```
