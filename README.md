@@ -6,7 +6,7 @@ El Sistema Nervioso Autónomo regula funciones involuntarias como la frecuencia 
 La HRV es una medida de las variaciones en el intervalo entre latidos consecutivos (intervalos R-R del ECG).
 
 ## Transformada Wavelet
-Es una herramienta matemática que permite analizar señales que cambian a lo largo del tiempo, como la señal del ECG.La transformada de wavelet descompone una señal en ondas pequeñas(wavelts) que estan tanto en tiempo como en frecuencia, permitiendo así mostrar que frecuencias están presententes y cuando.**"pequeñas ond. A diferencia de la Transformada de Fourier, que analiza toda la señal a la vez, la wavelet puede mostrar que frecuencias estan presentes y cuando ocurren.
+Es una herramienta matemática que permite analizar señales que cambian a lo largo del tiempo, como la señal del ECG.La transformada de wavelet descompone una señal en ondas pequeñas(wavelts) que estan tanto en tiempo como en frecuencia, permitiendo así mostrar que frecuencias están presententes y cuando.
 ## Wavelet cmor
 La wavelet Morlet compleja es una onda sinusoidal modulada por una función gaussiana, esta al ser compleja también da informacuon de la fase de la señal, esta se utiliza ya que permite detectar cambios suaves y graduales en las frecuencias asociadas al sistema autónomo, ayuda a visualizar cómo cambian estas frecuencias a lo largo del tiempo y permite identificar fluctuaciones rítmicas.
 
