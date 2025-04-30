@@ -1,19 +1,20 @@
-# Fundamento teórico
+# Variación-de-la-frecuencia-cárdiaca
+## Fundamento teórico
 El Sistema Nervioso Autónomo regula funciones involuntarias como la frecuencia cardíaca, la presión arterial y la digestión. Se divide en dos sistemas principales, el sistema simpático se encarga de la respuesta huida aumentando la frecuencia cardíaca (disminuye el HVR). El sistema parasimpático disminuye la frecuencia cardíaca y se  activa en reposo o durante la recuperación (Aumenta el HVR).
 
-# Variabilidad de la Frecuencia Cardíaca (HRV)  
+## Variabilidad de la Frecuencia Cardíaca (HRV)  
 La HRV es una medida de las variaciones en el intervalo entre latidos consecutivos (intervalos R-R del ECG).
 
-# Transformada Wavelet
+## Transformada Wavelet
 Es una herramienta matemática que permite analizar señales que cambian a lo largo del tiempo, como la señal del ECG.La transformada de wavelet descompone una señal en ondas pequeñas(wavelts) que estan tanto en tiempo como en frecuencia, permitiendo así mostrar que frecuencias están presententes y cuando.**"pequeñas ond. A diferencia de la Transformada de Fourier, que analiza toda la señal a la vez, la wavelet puede mostrar que frecuencias estan presentes y cuando ocurren.
-# Wavelet cmor
+## Wavelet cmor
 La wavelet Morlet compleja es una onda sinusoidal modulada por una función gaussiana, esta al ser compleja también da informacuon de la fase de la señal, esta se utiliza ya que permite detectar cambios suaves y graduales en las frecuencias asociadas al sistema autónomo, ayuda a visualizar cómo cambian estas frecuencias a lo largo del tiempo y permite identificar fluctuaciones rítmicas.
 
-# Diagrama de flujo
+## Diagrama de flujo
 ![image](https://github.com/user-attachments/assets/b05c2db5-c9fe-4d7b-972b-cfe95a10ea82)
 
 
-# Variación-de-la-frecuencia-cárdiaca
+
 ## Diseño del experimento y adquisición de la señal.
 Se tomó la señal electrocardiográfica del paciente durante un lapso de tiempo de 6 minutos, durante los primeros 2 minutos el sujet está en un estado de relajación absoluto con los ojos cerrados y como único estímulo música relajante, durante los siguientes dos minutos ese espera medir la actividad basal del sujeto, en este periodo de tiempo el sujeto está con los ojos abiertos entablando una conversación, finalmente durante los últimos 2 minutos este se expone a un estímulo estresante, en este caso videos de terror.
 
