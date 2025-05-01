@@ -326,7 +326,7 @@ def espectrograma_wavelet(tiempo_interp, rr_uniforme, fs_interp):
 ![image](https://github.com/user-attachments/assets/570167f5-67a2-4449-841b-52944b050a9e)
 ![image](https://github.com/user-attachments/assets/83e9726b-f10c-4d18-9f93-f3828dccb96e)
 
-## Evualuacion del estres 
+## Evualuación del estres 
 ### En el tiempo
 Se evalúa el nivel de estrés del sistema nervioso autónomo utilizando métricas de la variabilidad de la frecuencia cardíaca (HRV) medidas en el dominio del tiempo. Toma como entrada un diccionario que contiene tres métricas clave: SDNN, RMSSD y pNN50. Cada una refleja distintos aspectos de la actividad cardíaca y del sistema nervioso. Si SDNN (desviación estándar de los intervalos RR) es menor a 0.05 segundos, se interpreta como una baja variabilidad, lo que podría indicar estrés. Si RMSSD, que está más relacionado con el control del nervio vago (parasimpático), es menor a 0.03 segundos, también sugiere una baja regulación parasimpática. Finalmente, un valor de pNN50 menor al 10% indica que el tono parasimpático es bajo. En conjunto, esta función permite hacer una evaluación rápida de si el sistema nervioso está bajo estrés o si está en un estado equilibrado.
 ```
@@ -353,7 +353,7 @@ def analizar_estres_tiempo(hrv_metrica):
 ```
 ![image](https://github.com/user-attachments/assets/471d6ab3-65fe-46fd-a70d-4d3e39517510)
 
-###En la frecuencia
+### En la frecuencia
 Analiza el estrés en el dominio de la frecuencia a partir de los intervalos RR. Primero, interpola los datos para convertirlos en una señal uniforme en el tiempo, lo cual es necesario para aplicar análisis espectral. Luego, usa el método de Welch para calcular el espectro de potencia, es decir, cómo se distribuye la energía de la señal en diferentes frecuencias. El análisis se centra en dos bandas: la banda de baja frecuencia (LF: 0.04 a 0.15 Hz), que refleja tanto la actividad simpática como parasimpática, y la banda de alta frecuencia (HF: 0.15 a 0.4 Hz), que se asocia principalmente con la actividad parasimpática. La relación entre estas dos bandas (LF/HF ratio) se interpreta como un indicador del balance autonómico: un valor alto sugiere predominancia simpática (estrés), mientras que un valor bajo indica predominancia parasimpática (relajación).
 ```
 def calcular_estres_frecuencia(rr_intervals, tiempos_r, fs=4):
@@ -390,7 +390,7 @@ def calcular_estres_frecuencia(rr_intervals, tiempos_r, fs=4):
 ```
 ![image](https://github.com/user-attachments/assets/88e60f10-c16f-4f6c-ad46-d7ca02415c05)
 
-##Análisis
+## Análisis
 
 
 
