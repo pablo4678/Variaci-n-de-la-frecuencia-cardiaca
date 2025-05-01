@@ -127,6 +127,8 @@ def graficar(tiempos, voltajes):
     plt.grid(True)
     plt.show()
 ```
+![image](https://github.com/user-attachments/assets/2acba5dd-3424-4d47-9e2c-3c282a3335ad)
+
 ## Preprocesamiento de la señal y diseño del filtro
 Para filtrar la señal se usó un filtro tipo pasabanda con frecuencias de corte entre 0,5 Hz y 40 Hz.
 El filtro usado es de tipo IIR, tienen mayor atenuación que un filtro FIR del mismo orden, lo que permite un filtrado más eficiente (más atenuación usando la misma cantidad de procesamiento) el filtro usado también es de tipo Butterworth pues este tiene una plana hasta la frecuencia de corte y después disminuye 80dB por década para el filtro elegido de orden 4 es de 80dB por década.
@@ -177,7 +179,8 @@ def filtro_pasabanda(voltajes, fs, lowcut=0.5, highcut=40, orden=4):
     voltajes_filtrados = filtfilt(b, a, voltajes)
     return voltajes_filtrados
 ```
-Para hacer el análisis de la señal y analisar la variacion de la frecuencia cardiaca HRV. Se usaron las siguientes funciones:
+![image](https://github.com/user-attachments/assets/a582c64c-cfd8-409e-9a8f-9fd871d42c83)
+
 ### Detectar picos R
 Primero se normaliza la señal para que tenga media cero y desviación estándar uno. Luego define un umbral adaptativo usando el percentil 50 (la mediana) de la señal normalizada y establece una distancia mínima de 30 ms entre picos, en función de la frecuencia de muestreo `fs`. Utiliza la función `find_peaks` de SciPy para detectar los picos que cumplen con estos criterios, y convierte sus índices a tiempos correspondientes. Si `plot=True`, grafica la señal normalizada junto con los picos detectados. Finalmente, retorna los índices de los picos y sus tiempos.
 ```
@@ -204,8 +207,11 @@ def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
         print(f"Se detectaron {len(picos)} picos R.")
 
     return picos, tiempos_picos
- 
 ```
+![image](https://github.com/user-attachments/assets/379afaa2-9c0c-4e22-89b2-3e6beff200fb)
+
+![image](https://github.com/user-attachments/assets/16a74185-f892-4f4c-9c07-584edde31e94)
+
 ### Calcular R-R intervals y crear señal R-R
 La función `calcular_rr_intervals` calcula los intervalos RR, que representan el tiempo entre latidos cardíacos consecutivos, tomando la diferencia entre los tiempos de los picos R usando `np.diff`. Luego, `crear_senal_rr` genera una señal continua del mismo largo que el vector de tiempos, donde cada segmento entre dos picos R se llena con el valor del intervalo R-R correspondiente.
 ```
@@ -251,6 +257,8 @@ def calcular_hrv_tiempo(rr_intervals):
         'Media RR (s)': media_rr
     }
 ```
+![image](https://github.com/user-attachments/assets/d999ac38-fcb3-408c-993f-7400e9b05c09)
+
 ## Calcular HRV en la frecuencia
 Antes de aplicar la tranformada Wavelet es importante interpolar la señal, para garantizar que la señal esté adecuadamente muestreada y alineada con la frecuencia de muestreo deseada, evitando posibles efectos de aliasing o distorsión.
 
@@ -315,6 +323,9 @@ def espectrograma_wavelet(tiempo_interp, rr_uniforme, fs_interp):
     plt.tight_layout()
     plt.show()
 ```
+![image](https://github.com/user-attachments/assets/570167f5-67a2-4449-841b-52944b050a9e)
+![image](https://github.com/user-attachments/assets/83e9726b-f10c-4d18-9f93-f3828dccb96e)
+
 ## Evualuacion del estres 
 ### En el tiempo
 Se evalúa el nivel de estrés del sistema nervioso autónomo utilizando métricas de la variabilidad de la frecuencia cardíaca (HRV) medidas en el dominio del tiempo. Toma como entrada un diccionario que contiene tres métricas clave: SDNN, RMSSD y pNN50. Cada una refleja distintos aspectos de la actividad cardíaca y del sistema nervioso. Si SDNN (desviación estándar de los intervalos RR) es menor a 0.05 segundos, se interpreta como una baja variabilidad, lo que podría indicar estrés. Si RMSSD, que está más relacionado con el control del nervio vago (parasimpático), es menor a 0.03 segundos, también sugiere una baja regulación parasimpática. Finalmente, un valor de pNN50 menor al 10% indica que el tono parasimpático es bajo. En conjunto, esta función permite hacer una evaluación rápida de si el sistema nervioso está bajo estrés o si está en un estado equilibrado.
@@ -339,14 +350,9 @@ def analizar_estres_tiempo(hrv_metrica):
         print("pNN50 bajo (bajo tono parasimpático)")
     else:
         print("pNN50 adecuado.")
-
-def calcular_estres_frecuencia(rr_intervals, fs=4):
-    # Creamos un tiempo acumulado a partir de rr_intervals
-    tiempo_total = np.cumsum(rr_intervals)
-    if len(tiempo_total) < 2:
-        print("No hay suficientes datos para calcular espectro de frecuencia.")
-        return
 ```
+![image](https://github.com/user-attachments/assets/471d6ab3-65fe-46fd-a70d-4d3e39517510)
+
 ###En la frecuencia
 Analiza el estrés en el dominio de la frecuencia a partir de los intervalos RR. Primero, interpola los datos para convertirlos en una señal uniforme en el tiempo, lo cual es necesario para aplicar análisis espectral. Luego, usa el método de Welch para calcular el espectro de potencia, es decir, cómo se distribuye la energía de la señal en diferentes frecuencias. El análisis se centra en dos bandas: la banda de baja frecuencia (LF: 0.04 a 0.15 Hz), que refleja tanto la actividad simpática como parasimpática, y la banda de alta frecuencia (HF: 0.15 a 0.4 Hz), que se asocia principalmente con la actividad parasimpática. La relación entre estas dos bandas (LF/HF ratio) se interpreta como un indicador del balance autonómico: un valor alto sugiere predominancia simpática (estrés), mientras que un valor bajo indica predominancia parasimpática (relajación).
 ```
@@ -382,7 +388,9 @@ def calcular_estres_frecuencia(rr_intervals, tiempos_r, fs=4):
     else:
         print("Balance simpático-parasimpático razonable.")
 ```
+![image](https://github.com/user-attachments/assets/88e60f10-c16f-4f6c-ad46-d7ca02415c05)
 
+##Análisis
 
 
 
