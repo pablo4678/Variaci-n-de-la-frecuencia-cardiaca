@@ -251,8 +251,70 @@ def calcular_hrv_tiempo(rr_intervals):
         'Media RR (s)': media_rr
     }
 ```
+## Calcular HRV en la frecuencia
+Antes de aplicar la tranformada Wavelet es importante interpolar la señal, para garantizar que la señal esté adecuadamente muestreada y alineada con la frecuencia de muestreo deseada, evitando posibles efectos de aliasing o distorsión.
 
+```
+def interpolar_rr(tiempos_r, rr_intervals, fs_interpolado=4):
+    # Asegurar que rr_intervals tenga misma longitud que tiempos_r[1:]
+    if len(rr_intervals) != len(tiempos_r) - 1:
+        raise ValueError("rr_intervals debe tener una longitud de len(tiempos_r) - 1")
 
+    # Usar los tiempos entre picos (tiempos medios) para interpolar
+    tiempos_rr = [(tiempos_r[i] + tiempos_r[i+1]) / 2 for i in range(len(rr_intervals))]
+
+    tiempo_interp = np.arange(tiempos_rr[0], tiempos_rr[-1], 1 / fs_interpolado)
+    interp_func = interp1d(tiempos_rr, rr_intervals, kind='cubic', fill_value='extrapolate')
+    rr_uniforme = interp_func(tiempo_interp)
+
+    return tiempo_interp, rr_uniforme
+
+```
+La función `espectrograma_wavelet` analiza una señal temporal usando la Transformada Wavelet Continua (CWT), que descompone la señal en diferentes frecuencias a lo largo del tiempo. Utiliza una wavelet llamada `cmor1.5-1.0`, que es una wavelet compleja de Morlet. Los números 1.5 y 1.0 indican cómo se comporta esta wavelet: el 1.5 controla lo "ancha" o "estrecha" que es la onda en términos de frecuencia (más ancho, menor resolución en el tiempo) y el 1.0 indica cuántas oscilaciones hace la onda portadora. Esto ayuda a capturar diferentes componentes de la señal en distintas escalas. Además, la función define un rango de escalas (de 1 a 127) que ajusta la resolución temporal y frecuencial según el análisis. Luego, calcula la potencia espectral de la señal (basada en los coeficientes de la wavelet) y genera un espectrograma visual, resaltando bandas de baja frecuencia (LF) y alta frecuencia (HF) con líneas horizontales. Finalmente, se analiza cómo cambia la potencia en estas bandas a lo largo del tiempo, mostrando una gráfica que ilustra la evolución de la potencia en estas frecuencias.
+```
+def espectrograma_wavelet(tiempo_interp, rr_uniforme, fs_interp):
+    wavelet = 'cmor1.5-1.0'
+    scales = np.arange(1, 128)
+    coef, freqs = pywt.cwt(rr_uniforme, scales, wavelet, sampling_period=1/fs_interp)
+    potencias = np.abs(coef)**2
+
+    # Espectrograma limpio y con líneas claras de frecuencia
+    plt.figure(figsize=(12, 6))
+    plt.imshow(potencias, extent=[tiempo_interp.min(), tiempo_interp.max(), freqs.min(), freqs.max()],
+               cmap='jet', aspect='auto', origin='lower', vmax=np.percentile(potencias, 99))
+    
+    # Líneas horizontales para bandas LF y HF
+    plt.axhline(0.04, color='white', linestyle='-', linewidth=2, label='0.04 Hz (Límite LF)')
+    plt.axhline(0.15, color='cyan', linestyle='-', linewidth=2, label='0.15 Hz (Límite HF)')
+    plt.axhline(0.4, color='magenta', linestyle='-', linewidth=2, label='0.4 Hz')
+
+    plt.colorbar(label='Potencia espectral')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Frecuencia (Hz)')
+    plt.title('Espectrograma Wavelet Continua')
+    plt.legend(loc='upper right')
+    plt.grid(False)  
+    plt.tight_layout()
+    plt.show()
+
+    # Análisis de potencia en bandas LF y HF
+    lf_band = (freqs >= 0.04) & (freqs <= 0.15)
+    hf_band = (freqs > 0.15) & (freqs <= 0.4)
+    pot_lf = np.mean(potencias[lf_band, :], axis=0)
+    pot_hf = np.mean(potencias[hf_band, :], axis=0)
+
+    # Gráfica de evolución de potencia en el tiempo
+    plt.figure(figsize=(12, 5))
+    plt.plot(tiempo_interp, pot_lf, label='Potencia LF (0.04–0.15 Hz)', color='orange')
+    plt.plot(tiempo_interp, pot_hf, label='Potencia HF (0.15–0.4 Hz)', color='green')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Potencia relativa')
+    plt.title('Evolución de la potencia LF y HF')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+```
 
 
 
