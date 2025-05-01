@@ -351,7 +351,7 @@ def analizar_estres_tiempo(hrv_metrica):
     else:
         print("pNN50 adecuado.")
 ```
-![image](https://github.com/user-attachments/assets/471d6ab3-65fe-46fd-a70d-4d3e39517510)
+![image](https://github.com/user-attachments/assets/7a9912e9-332a-42ba-a5a5-28c644800770)
 
 ### En la frecuencia
 Analiza el estrés en el dominio de la frecuencia a partir de los intervalos RR. Primero, interpola los datos para convertirlos en una señal uniforme en el tiempo, lo cual es necesario para aplicar análisis espectral. Luego, usa el método de Welch para calcular el espectro de potencia, es decir, cómo se distribuye la energía de la señal en diferentes frecuencias. El análisis se centra en dos bandas: la banda de baja frecuencia (LF: 0.04 a 0.15 Hz), que refleja tanto la actividad simpática como parasimpática, y la banda de alta frecuencia (HF: 0.15 a 0.4 Hz), que se asocia principalmente con la actividad parasimpática. La relación entre estas dos bandas (LF/HF ratio) se interpreta como un indicador del balance autonómico: un valor alto sugiere predominancia simpática (estrés), mientras que un valor bajo indica predominancia parasimpática (relajación).
