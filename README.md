@@ -177,10 +177,9 @@ def filtro_pasabanda(voltajes, fs, lowcut=0.5, highcut=40, orden=4):
     voltajes_filtrados = filtfilt(b, a, voltajes)
     return voltajes_filtrados
 ```
-## Calculo de la frecuencia cárdiaca y análisis de la señal
 Para hacer el análisis de la señal y analisar la variacion de la frecuencia cardiaca HRV. Se usaron las siguientes funciones:
-### detectar_picos_r
-Esta función detecta los picos, haciendo uso del voltaje de umbral y el tiempo mínimo entre 2 picos
+### detectar picos R
+Primero se normaliza la señal para que tenga media cero y desviación estándar uno. Luego define un umbral adaptativo usando el percentil 50 (la mediana) de la señal normalizada y establece una distancia mínima de 30 ms entre picos, en función de la frecuencia de muestreo `fs`. Utiliza la función `find_peaks` de SciPy para detectar los picos que cumplen con estos criterios, y convierte sus índices a tiempos correspondientes. Si `plot=True`, grafica la señal normalizada junto con los picos detectados. Finalmente, retorna los índices de los picos y sus tiempos.
 ```
 def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
  
@@ -207,14 +206,24 @@ def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
     return picos, tiempos_picos
  
 ```
-### calcular_rr_intervals
-Calcula la diferencia en tiempo entre cada par de picos R consecutivos
+### calcular R-R intervals y crear señal R-R
+La función `calcular_rr_intervals` calcula los intervalos RR, que representan el tiempo entre latidos cardíacos consecutivos, tomando la diferencia entre los tiempos de los picos R usando `np.diff`. Luego, `crear_senal_rr` genera una señal continua del mismo largo que el vector de tiempos, donde cada segmento entre dos picos R se llena con el valor del intervalo R-R correspondiente.
 ```
 def calcular_rr_intervals(tiempos_picos):
-    rr_intervals = np.diff(tiempos_picos)
-    return rr_intervals
+    return np.diff(tiempos_picos)
+
+def crear_senal_rr(tiempos, indices_r, rr_intervals):
+    senal_rr = np.zeros(len(tiempos))
+    for i in range(1, len(indices_r)):
+        inicio = indices_r[i - 1]
+        fin = indices_r[i]
+        rr = rr_intervals[i - 1]
+        senal_rr[inicio:fin] = rr
+    if len(indices_r) > 1:
+        senal_rr[indices_r[-1]:] = rr_intervals[-1]
+    return senal_rr
 ```
-### calcular_hrv_tiempo
+## calcular HRV en el tiempo
 Realiza el análisis de la variación de la frecuencia cardiaca en el tiempo, esto lo logra mediante los siguientes parametros:
 -SDNN: desviación estándar de los RR.
 
