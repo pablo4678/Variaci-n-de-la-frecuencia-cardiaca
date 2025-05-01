@@ -395,8 +395,13 @@ Después de realizar el experimento, tomar y procesar la señal se llegaron a al
 De entre todas las transformadas wavelet se eligió Morlet compleja (cmor1.5-1.0), ya que esta es especialmente adecuada para analizar señales suaves y no estacionarias como el ECG, y permite obtener información tanto de frecuencia como de fase. 
 Si se utilizaran otras wavelets, como Haar o Daubechies, los resultados podrían variar sen el caso de la tipo Haar esta cuenta con mejor resolución temporal, lo cual es útil para detectar eventos rápidos, pero sacrifican precisión en la resolución frecuencial. Por otro lado, wavelets más largas como las Daubechies permiten una mejor discriminación en frecuencia, pero tienden a suavizar los detalles temporales rápidos. Por ello, la elección de la wavelet tiene un impacto directo en la capacidad para identificar con precisión las bandas de baja frecuencia (LF) y alta frecuencia (HF), lo que a su vez afecta la interpretación del estado del sistema nervioso autónomo.
 Con el análisis en tiempo-frecuencia usando la transformada wavelet, intentamos responder la pregunta problema de si el estrés produce alteraciones en la variabilidad de la frecuencia cardiaca, después de tener la hipótesis de que si afecta de manera importante la hrv, se planteo el experimento donde el sujeto estará en 3 estados diferentes de relajación, una de relajación completa, una de nivel medio y finalmente una de estrés (esto se explica más a detalle en el apartado de diseño del experimento), después de aplicar la transformada wavelet tipo Morlet, se ve como hay un predominio de la actividad parasimpática indicando la relajación en los primeros dos minutos, al interrumpir la actividad relajante y hacer que el sujeto abra los ojos se ve un claro aumento en la potencia espectral de las frecuencias de la banda de alta frecuencia indicando un pico en la actividad simpática, luego de este cambio vuelve a bajar y no aumenta hasta ser sometido a un estímulo estresante.
-
-
+## Bibliografía
+Montoya, J. R. A. (2001). La transformada  wavelet. https://www.um.edu.ar/ojs2019/index.php/RUM/article/view/22
+Kim, H. J., Park, Y., & Lee, J. (2024). The Validity of Heart Rate Variability (HRV) in Educational Research and a Synthesis of Recommendations. Educational Psychology Review, 36(2). https://doi.org/10.1007/s10648-024-09878-x
+## Colaboradores
+* Catalina Martínez 
+* Pablo Acevedo
+* Laura Ávila
 
 
 
