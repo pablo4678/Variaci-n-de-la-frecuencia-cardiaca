@@ -178,7 +178,7 @@ def filtro_pasabanda(voltajes, fs, lowcut=0.5, highcut=40, orden=4):
     return voltajes_filtrados
 ```
 Para hacer el análisis de la señal y analisar la variacion de la frecuencia cardiaca HRV. Se usaron las siguientes funciones:
-### detectar picos R
+### Detectar picos R
 Primero se normaliza la señal para que tenga media cero y desviación estándar uno. Luego define un umbral adaptativo usando el percentil 50 (la mediana) de la señal normalizada y establece una distancia mínima de 30 ms entre picos, en función de la frecuencia de muestreo `fs`. Utiliza la función `find_peaks` de SciPy para detectar los picos que cumplen con estos criterios, y convierte sus índices a tiempos correspondientes. Si `plot=True`, grafica la señal normalizada junto con los picos detectados. Finalmente, retorna los índices de los picos y sus tiempos.
 ```
 def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
@@ -206,7 +206,7 @@ def detectar_picos_r(tiempos, voltajes_filtrados, fs, plot=True):
     return picos, tiempos_picos
  
 ```
-### calcular R-R intervals y crear señal R-R
+### Calcular R-R intervals y crear señal R-R
 La función `calcular_rr_intervals` calcula los intervalos RR, que representan el tiempo entre latidos cardíacos consecutivos, tomando la diferencia entre los tiempos de los picos R usando `np.diff`. Luego, `crear_senal_rr` genera una señal continua del mismo largo que el vector de tiempos, donde cada segmento entre dos picos R se llena con el valor del intervalo R-R correspondiente.
 ```
 def calcular_rr_intervals(tiempos_picos):
@@ -223,15 +223,8 @@ def crear_senal_rr(tiempos, indices_r, rr_intervals):
         senal_rr[indices_r[-1]:] = rr_intervals[-1]
     return senal_rr
 ```
-## calcular HRV en el tiempo
-Realiza el análisis de la variación de la frecuencia cardiaca en el tiempo, esto lo logra mediante los siguientes parametros:
--SDNN: desviación estándar de los RR.
-
--RMSSD: raíz cuadrada de la media de las diferencias cuadradas sucesivas.
-
--pNN50: % de diferencias RR > 50 ms.
-
--media_rr: promedio de todos los RR.
+## Calcular HRV en el tiempo
+Se calcula métricas de variabilidad de la frecuencia cardíaca (HRV) en el dominio del tiempo a partir de los intervalos RR. Se convierten los intervalos a un arreglo NumPy, calcula las diferencias entre intervalos consecutivos (`rr_diff`) y luego computa: **SDNN**, la desviación estándar de los RR (variabilidad general); **RMSSD**, la raíz del promedio de las diferencias cuadráticas entre RR consecutivos (sensibilidad a cambios rápidos); **pNN50**, el porcentaje de diferencias sucesivas mayores a 50 ms (indicador de tono parasimpático); y la **media de los intervalos RR**, que refleja la frecuencia cardíaca promedio.
 ```
 def calcular_hrv_tiempo(rr_intervals):
     rr_intervals = np.array(rr_intervals)
