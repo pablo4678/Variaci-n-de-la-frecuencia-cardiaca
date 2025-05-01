@@ -315,8 +315,73 @@ def espectrograma_wavelet(tiempo_interp, rr_uniforme, fs_interp):
     plt.tight_layout()
     plt.show()
 ```
+## Evualuacion del estres 
+### En el tiempo
+Se evalúa el nivel de estrés del sistema nervioso autónomo utilizando métricas de la variabilidad de la frecuencia cardíaca (HRV) medidas en el dominio del tiempo. Toma como entrada un diccionario que contiene tres métricas clave: SDNN, RMSSD y pNN50. Cada una refleja distintos aspectos de la actividad cardíaca y del sistema nervioso. Si SDNN (desviación estándar de los intervalos RR) es menor a 0.05 segundos, se interpreta como una baja variabilidad, lo que podría indicar estrés. Si RMSSD, que está más relacionado con el control del nervio vago (parasimpático), es menor a 0.03 segundos, también sugiere una baja regulación parasimpática. Finalmente, un valor de pNN50 menor al 10% indica que el tono parasimpático es bajo. En conjunto, esta función permite hacer una evaluación rápida de si el sistema nervioso está bajo estrés o si está en un estado equilibrado.
+```
+def analizar_estres_tiempo(hrv_metrica):
+    sdnn = hrv_metrica['SDNN (s)']
+    rmssd = hrv_metrica['RMSSD (s)']
+    pnn50 = hrv_metrica['pNN50 (%)']
+    
+    print("\n--- Evaluación de Estrés en el Dominio del Tiempo ---")
+    if sdnn < 0.05:
+        print("SDNN bajo (posible estrés)")
+    else:
+        print("SDNN adecuado")
+    
+    if rmssd < 0.03:
+        print("RMSSD bajo (posible inhibición vagal)")
+    else:
+        print("RMSSD adecuado")
+    
+    if pnn50 < 10:
+        print("pNN50 bajo (bajo tono parasimpático)")
+    else:
+        print("pNN50 adecuado.")
 
+def calcular_estres_frecuencia(rr_intervals, fs=4):
+    # Creamos un tiempo acumulado a partir de rr_intervals
+    tiempo_total = np.cumsum(rr_intervals)
+    if len(tiempo_total) < 2:
+        print("No hay suficientes datos para calcular espectro de frecuencia.")
+        return
+```
+###En la frecuencia
+Analiza el estrés en el dominio de la frecuencia a partir de los intervalos RR. Primero, interpola los datos para convertirlos en una señal uniforme en el tiempo, lo cual es necesario para aplicar análisis espectral. Luego, usa el método de Welch para calcular el espectro de potencia, es decir, cómo se distribuye la energía de la señal en diferentes frecuencias. El análisis se centra en dos bandas: la banda de baja frecuencia (LF: 0.04 a 0.15 Hz), que refleja tanto la actividad simpática como parasimpática, y la banda de alta frecuencia (HF: 0.15 a 0.4 Hz), que se asocia principalmente con la actividad parasimpática. La relación entre estas dos bandas (LF/HF ratio) se interpreta como un indicador del balance autonómico: un valor alto sugiere predominancia simpática (estrés), mientras que un valor bajo indica predominancia parasimpática (relajación).
+```
+def calcular_estres_frecuencia(rr_intervals, tiempos_r, fs=4):
+    if len(rr_intervals) != len(tiempos_r) - 1:
+        raise ValueError("rr_intervals debe tener una longitud de len(tiempos_r) - 1")
 
+    tiempos_rr = [(tiempos_r[i] + tiempos_r[i+1]) / 2 for i in range(len(rr_intervals))]
+    tiempo_interp = np.arange(tiempos_rr[0], tiempos_rr[-1], 1 / fs)
+
+    interp_func = interp1d(tiempos_rr, rr_intervals, kind='cubic', fill_value='extrapolate')
+    rr_interp = interp_func(tiempo_interp)
+
+    freqs, psd = welch(rr_interp, fs=fs, nperseg=min(256, len(rr_interp)))
+
+    # Potencia en bandas LF y HF
+    lf_band = (freqs >= 0.04) & (freqs < 0.15)
+    hf_band = (freqs >= 0.15) & (freqs < 0.4)
+    
+    lf_power = np.trapz(psd[lf_band], freqs[lf_band])
+    hf_power = np.trapz(psd[hf_band], freqs[hf_band])
+    lf_hf_ratio = lf_power / hf_power if hf_power > 0 else np.inf
+
+    print("\n--- Evaluación de Estrés en el Dominio de la Frecuencia ---")
+    print(f"LF Power: {lf_power:.4f}")
+    print(f"HF Power: {hf_power:.4f}")
+    print(f"LF/HF Ratio: {lf_hf_ratio:.2f}")
+
+    if lf_hf_ratio > 2.5:
+        print("LF/HF alto - predominancia simpática (estrés).")
+    elif lf_hf_ratio < 1.0:
+        print("Predominio parasimpático (relajación).")
+    else:
+        print("Balance simpático-parasimpático razonable.")
+```
 
 
 
